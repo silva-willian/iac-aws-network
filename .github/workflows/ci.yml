@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+      - develop
+      - development
+      - release
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    env:
+      PROJECT_NAME: iac-network
+      AWS_REGION: us-east-1
+      REMOTE_STATE_BUCKET: rocketseat-remote-state
+      REMOTE_STATE_FILE: iac-network-ecr.tfstate
+      REMOTE_STATE_AWS_REGION: us-east-1
+      PRODUCT: rocketseat
+      CREATED_BY: devops-tools
+      OWNER: squad-rocketseat
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: configure-crentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: unit-test
+      run: chmod +x ./devops/scripts/unit-test.sh && ./devops/scripts/unit-test.sh
+
+    - name: build
+      run: chmod +x ./devops/scripts/build.sh && ./devops/scripts/build.sh
