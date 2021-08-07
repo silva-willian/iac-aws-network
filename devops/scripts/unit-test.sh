@@ -8,7 +8,7 @@ check_sucessful(){
 }
 
 test_build() {
-    docker build -t ${PROJECT_NAME}-test:${VERSION} -f devops/application/test/Dockerfile .
+    docker build -t ${PROJECT_NAME}-test:${VERSION} -f devops/iac/test/Dockerfile .
 }
 
 test_execute() {
