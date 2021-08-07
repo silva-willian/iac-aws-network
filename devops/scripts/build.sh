@@ -26,22 +26,22 @@ login() {
 }
 
 build_images() {
-    build_push ${PROJECT_NAME}-deploy devops/iac/deploy/Dockerfile
+    build_push deploy devops/iac/deploy/Dockerfile
         check_sucessful
 
-    build_push ${PROJECT_NAME}-destroy devops/iac/destroy/Dockerfile
+    build_push destroy devops/iac/destroy/Dockerfile
         check_sucessful
 }
 
 build_push(){
 
-    docker build -t ${AWS_ACCOUNT_REGISTRY}.dkr.ecr.${AWS_REGION}.amazonaws.com/$1:${VERSION} -f $2 .
+    docker build -t ${AWS_ACCOUNT_REGISTRY}.dkr.ecr.${AWS_REGION}.amazonaws.com/${PROJECT_NAME}:${VERSION}-$1 -f $2 .
         check_sucessful
 
-    docker push ${AWS_ACCOUNT_REGISTRY}.dkr.ecr.${AWS_REGION}.amazonaws.com/$1:${VERSION}
+    docker push ${AWS_ACCOUNT_REGISTRY}.dkr.ecr.${AWS_REGION}.amazonaws.com/${PROJECT_NAME}:${VERSION}-$1
         check_sucessful
 
-    docker rmi ${AWS_ACCOUNT_REGISTRY}.dkr.ecr.${AWS_REGION}.amazonaws.com/$1:${VERSION}
+    docker rmi ${AWS_ACCOUNT_REGISTRY}.dkr.ecr.${AWS_REGION}.amazonaws.com/${PROJECT_NAME}:${VERSION}-$1
         check_sucessful
 }
 
