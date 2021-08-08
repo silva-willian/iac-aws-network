@@ -1,8 +1,16 @@
-name: ci
+name: deploy-rocketseat-vpc
 
 on:
   workflow_dispatch:
-
+    inputs:
+      ENV:
+        description: 'Environment name'
+        required: true
+        default: 'dev'
+      ENV_VERSION:
+        description: 'Environment verion'
+        required: true
+        default: 'v1'
 
 jobs:
   build:
@@ -15,6 +23,8 @@ jobs:
       PRODUCT: network
       CREATED_BY: devops-tools
       OWNER: squad-network
+      ENV: ${{ github.event.inputs.ENV }}
+      ENV_VERSION: ${{ github.event.inputs.ENV_VERSION }}
     runs-on: ubuntu-latest
 
     steps:
@@ -23,12 +33,9 @@ jobs:
     - name: configure-crentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.AWS_NETWORK_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_NETWORK_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: unit-test
+    - name: deploy
       run: chmod +x ./devops/scripts/unit-test.sh && ./devops/scripts/unit-test.sh
-
-    - name: build
-      run: chmod +x ./devops/scripts/build.sh && ./devops/scripts/build.sh
