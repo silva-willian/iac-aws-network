@@ -38,4 +38,4 @@ jobs:
         aws-region: us-east-1
 
     - name: deploy
-      run: chmod +x ./devops/scripts/unit-test.sh && ./devops/scripts/unit-test.sh
+      run: chmod +x ./devops/scripts/deploy.sh && ./devops/scripts/deploy.sh
